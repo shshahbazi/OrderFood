@@ -157,3 +157,10 @@ class AddAddress(generics.CreateAPIView):
 class GetAddress(generics.RetrieveAPIView):
     serializer_class = AddressSerializer
     queryset = Address.objects.all()
+
+
+class GetUserAddresses(generics.ListAPIView):
+    serializer_class = AddressSerializer
+
+    def get_queryset(self):
+        return Address.objects.filter(user__id=self.request.user.id)
