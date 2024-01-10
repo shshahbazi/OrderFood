@@ -164,3 +164,8 @@ class GetUserAddresses(generics.ListAPIView):
 
     def get_queryset(self):
         return Address.objects.filter(user__id=self.request.user.id)
+
+
+class UpdateAddress(generics.UpdateAPIView):
+    serializer_class = AddressSerializer
+    queryset = Address.objects.all()

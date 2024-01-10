@@ -14,4 +14,5 @@ urlpatterns = [
     path('add-address/', AddAddress.as_view()),
     path('get-address/<int:pk>/', GetAddress.as_view()),
     path('get-user-address/', GetUserAddresses.as_view()),
+    path('update-address/<int:pk>/', UpdateAddress.as_view()),
 ]
