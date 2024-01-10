@@ -16,4 +16,5 @@ urlpatterns = [
     path('get-user-address/', GetUserAddresses.as_view()),
     path('update-address/<int:pk>/', UpdateAddress.as_view()),
     path('add-fav-food/<int:pk>/', AddFavFood.as_view()),
+    path('delete-fav-food/<int:pk>/', DeleteFavFood.as_view()),
 ]
