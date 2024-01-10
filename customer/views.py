@@ -15,6 +15,7 @@ from django.conf import settings
 from smtplib import SMTPException
 
 from food.models import Food
+from restaurant.models import Restaurant
 from .serializers import *
 
 
@@ -189,6 +190,17 @@ class DeleteFavFood(APIView):
         user = get_object_or_404(Profile, id=request.user.id)
         food = get_object_or_404(Food, pk=pk)
         user.fav_foods.remove(food)
+        user.save()
+        profile_serializer = ProfileSerializer(user)
+        return Response(profile_serializer.data, status=status.HTTP_200_OK)
+
+
+class AddFavRestaurant(APIView):
+
+    def get(self, request, pk):
+        user = get_object_or_404(Profile, id=request.user.id)
+        restaurant = get_object_or_404(Restaurant, pk=pk)
+        user.fav_restaurant.add(restaurant)
         user.save()
         profile_serializer = ProfileSerializer(user)
         return Response(profile_serializer.data, status=status.HTTP_200_OK)

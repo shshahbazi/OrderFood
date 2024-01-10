@@ -17,4 +17,5 @@ urlpatterns = [
     path('update-address/<int:pk>/', UpdateAddress.as_view()),
     path('add-fav-food/<int:pk>/', AddFavFood.as_view()),
     path('delete-fav-food/<int:pk>/', DeleteFavFood.as_view()),
+    path('add-fav-res/<int:pk>/', AddFavRestaurant.as_view()),
 ]
