@@ -144,25 +144,29 @@ class SetPassword(APIView):
 class GetUserProfile(generics.RetrieveAPIView):
     serializer_class = ProfileSerializer
     queryset = Profile.objects.all()
+    permission_classes = (IsAuthenticated,)
 
 
 class UpdateProfile(generics.UpdateAPIView):
     serializer_class = ProfileSerializer
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     queryset = Profile.objects.all()
 
 
 class AddAddress(generics.CreateAPIView):
     serializer_class = AddressSerializer
+    permission_classes = (IsAuthenticated,)
 
 
 class GetAddress(generics.RetrieveAPIView):
     serializer_class = AddressSerializer
     queryset = Address.objects.all()
+    permission_classes = (IsAuthenticated,)
 
 
 class GetUserAddresses(generics.ListAPIView):
     serializer_class = AddressSerializer
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         return Address.objects.filter(user__id=self.request.user.id)
@@ -171,9 +175,11 @@ class GetUserAddresses(generics.ListAPIView):
 class UpdateAddress(generics.UpdateAPIView):
     serializer_class = AddressSerializer
     queryset = Address.objects.all()
+    permission_classes = (IsAuthenticated,)
 
 
 class AddFavFood(APIView):
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request, pk):
         user = get_object_or_404(Profile, id=request.user.id)
@@ -185,6 +191,7 @@ class AddFavFood(APIView):
 
 
 class DeleteFavFood(APIView):
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request, pk):
         user = get_object_or_404(Profile, id=request.user.id)
@@ -196,6 +203,7 @@ class DeleteFavFood(APIView):
 
 
 class AddFavRestaurant(APIView):
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request, pk):
         user = get_object_or_404(Profile, id=request.user.id)
@@ -207,6 +215,7 @@ class AddFavRestaurant(APIView):
 
 
 class DeleteFavRestaurant(APIView):
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request, pk):
         user = get_object_or_404(Profile, id=request.user.id)
