@@ -148,3 +148,7 @@ class UpdateProfile(generics.UpdateAPIView):
     serializer_class = ProfileSerializer
     permission_classes = (AllowAny,)
     queryset = Profile.objects.all()
+
+
+class AddAddress(generics.CreateAPIView):
+    serializer_class = AddressSerializer
