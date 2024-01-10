@@ -9,4 +9,5 @@ urlpatterns = [
     path('email-verify/', VerifyEmail.as_view(), name='email-verify'),
     path('forgot-pass-request/', ForgotPasswordRequest.as_view()),
     path('set-password/', SetPassword.as_view(), name='set-password'),
+    path('get-user/<int:pk>/', GetUserProfile.as_view()),
 ]

@@ -137,3 +137,8 @@ class SetPassword(APIView):
             return Response({'error': 'Token Has Expired'}, status=status.HTTP_400_BAD_REQUEST)
         except jwt.exceptions.DecodeError:
             return Response({'error': 'Invalid Token'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetUserProfile(generics.RetrieveAPIView):
+    serializer_class = ProfileSerializer
+    queryset = Profile.objects.all()
