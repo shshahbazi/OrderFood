@@ -204,3 +204,14 @@ class AddFavRestaurant(APIView):
         user.save()
         profile_serializer = ProfileSerializer(user)
         return Response(profile_serializer.data, status=status.HTTP_200_OK)
+
+
+class DeleteFavRestaurant(APIView):
+
+    def get(self, request, pk):
+        user = get_object_or_404(Profile, id=request.user.id)
+        restaurant = get_object_or_404(Restaurant, pk=pk)
+        user.fav_restaurant.remove(restaurant)
+        user.save()
+        profile_serializer = ProfileSerializer(user)
+        return Response(profile_serializer.data, status=status.HTTP_200_OK)
