@@ -142,3 +142,9 @@ class SetPassword(APIView):
 class GetUserProfile(generics.RetrieveAPIView):
     serializer_class = ProfileSerializer
     queryset = Profile.objects.all()
+
+
+class UpdateProfile(generics.UpdateAPIView):
+    serializer_class = ProfileSerializer
+    permission_classes = (AllowAny,)
+    queryset = Profile.objects.all()
