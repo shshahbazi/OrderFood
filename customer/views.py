@@ -18,6 +18,8 @@ from .serializers import *
 
 
 class AuthLoginUser(ObtainAuthToken):
+    permission_classes = (AllowAny,)
+
     def post(self, request, *args, **kwargs):
         serializer = AuthTokenSerializer(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
@@ -71,6 +73,7 @@ class UserRegistration(generics.CreateAPIView):
 
 
 class VerifyEmail(APIView):
+    permission_classes = (AllowAny,)
 
     def get(self, request):
         token = request.GET.get('token')
@@ -97,3 +100,40 @@ class VerifyEmail(APIView):
             return Response({'message': 'Email Sent.'}, status=status.HTTP_200_OK)
         except SMTPException as e:
             return Response({'error': e}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ForgotPasswordRequest(APIView):
+    permission_classes = (AllowAny,)
+
+    def post(self, request,  *args, **kwargs):
+        try:
+            user = get_object_or_404(Profile, email=request.data['email'])
+            token = RefreshToken.for_user(user).access_token
+
+            current_site = get_current_site(request).domain
+            relative_link = reverse('set-password')
+
+            absurl = 'http://' + current_site + relative_link + '?token=' + str(token)
+            email_body = f'Hi {user.full_name}\nUse link below to recovery your password\n{absurl}'
+            email = EmailMessage(subject='Recovery your password', body=email_body, to=[user.email])
+            email.send()
+            return Response({'message': 'Email Sent.'}, status=status.HTTP_200_OK)
+        except SMTPException as e:
+            return Response({'error': e}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class SetPassword(APIView):
+    permission_classes = (AllowAny,)
+
+    def post(self, request):
+        token = request.GET.get('token')
+        try:
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms='HS256')
+            user = Profile.objects.get(id=payload['user_id'])
+            user.set_password(request.data['password'])
+            user.save()
+            return Response({'message': 'Password Set Successfully'}, status=status.HTTP_200_OK)
+        except jwt.ExpiredSignatureError:
+            return Response({'error': 'Token Has Expired'}, status=status.HTTP_400_BAD_REQUEST)
+        except jwt.exceptions.DecodeError:
+            return Response({'error': 'Invalid Token'}, status=status.HTTP_400_BAD_REQUEST)

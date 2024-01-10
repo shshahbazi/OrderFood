@@ -7,4 +7,6 @@ urlpatterns = [
     path('logout/', LogoutAPIView.as_view()),
     path('register/', UserRegistration.as_view()),
     path('email-verify/', VerifyEmail.as_view(), name='email-verify'),
+    path('forgot-pass-request/', ForgotPasswordRequest.as_view()),
+    path('set-password/', SetPassword.as_view(), name='set-password'),
 ]
