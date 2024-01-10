@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-d$v!q+y6*kac*ou5&^)870tp&u!tu32u6x$)&in(bksp(z3lbg
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -44,7 +44,15 @@ INSTALLED_APPS = [
     'rest_framework_swagger',
     'drf_yasg',
     'corsheaders',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'rest_framework_simplejwt'
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES':
+        ('rest_framework.permissions.IsAuthenticatedOrReadOnly',),
+}
 
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {
@@ -97,7 +105,7 @@ DATABASES = {
     }
 }
 
-
+AUTH_USER_MODEL = 'customer.Profile'
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
