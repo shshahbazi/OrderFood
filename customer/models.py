@@ -35,10 +35,10 @@ class Profile(AbstractUser):
     username = None
     full_name = models.CharField(max_length=500, blank=False, null=False)
     email = models.EmailField(unique=True, blank=False)
-    picture = models.FileField()
+    picture = models.FileField(blank=True)
     phone = models.CharField(max_length=50, validators=[PhoneValidator], blank=True)
-    fav_restaurant = models.ManyToManyField(Restaurant)
-    fav_foods = models.ManyToManyField(Food)
+    fav_restaurant = models.ManyToManyField(Restaurant, blank=True)
+    fav_foods = models.ManyToManyField(Food, blank=True)
     is_verified = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
