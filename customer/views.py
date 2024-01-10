@@ -152,3 +152,8 @@ class UpdateProfile(generics.UpdateAPIView):
 
 class AddAddress(generics.CreateAPIView):
     serializer_class = AddressSerializer
+
+
+class GetAddress(generics.RetrieveAPIView):
+    serializer_class = AddressSerializer
+    queryset = Address.objects.all()
