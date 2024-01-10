@@ -14,6 +14,7 @@ import jwt
 from django.conf import settings
 from smtplib import SMTPException
 
+from food.models import Food
 from .serializers import *
 
 
@@ -169,3 +170,14 @@ class GetUserAddresses(generics.ListAPIView):
 class UpdateAddress(generics.UpdateAPIView):
     serializer_class = AddressSerializer
     queryset = Address.objects.all()
+
+
+class AddFavFood(APIView):
+
+    def get(self, request, pk):
+        user = get_object_or_404(Profile, id=request.user.id)
+        food = get_object_or_404(Food, pk=pk)
+        user.fav_foods.add(food)
+        user.save()
+        profile_serializer = ProfileSerializer(user)
+        return Response(profile_serializer.data, status=status.HTTP_200_OK)
