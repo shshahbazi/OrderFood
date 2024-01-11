@@ -21,16 +21,16 @@ class Restaurant(models.Model):
     }
 
     name = models.CharField(max_length=500)
-    background_pic = models.FileField()
-    icon = models.FileField()
-    description = models.TextField()
+    background_pic = models.FileField(blank=True)
+    icon = models.FileField(blank=True)
+    description = models.TextField(blank=True)
     address = models.CharField(max_length=500)
     category = models.CharField(max_length=30, choices=CATEGORY_CHOICES)
     rate = models.DecimalField(default=0, decimal_places=1, max_digits=3,
                                validators=[MaxValueValidator(5.0)])
     delivery_fee = models.DecimalField(blank=False, decimal_places=2, max_digits=4, default=0)
     arrival_time = models.IntegerField(default=0)
-    features = models.ManyToManyField(RestaurantFeature)
+    features = models.ManyToManyField(RestaurantFeature, blank=True)
     open_time = models.TimeField()
     dine_in = models.BooleanField(default=False)
     city = models.CharField(max_length=100)

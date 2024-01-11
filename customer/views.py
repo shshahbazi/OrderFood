@@ -14,6 +14,8 @@ import jwt
 from django.conf import settings
 from smtplib import SMTPException
 
+from food.models import Food
+from restaurant.models import Restaurant
 from .serializers import *
 
 
@@ -142,3 +144,83 @@ class SetPassword(APIView):
 class GetUserProfile(generics.RetrieveAPIView):
     serializer_class = ProfileSerializer
     queryset = Profile.objects.all()
+    permission_classes = (IsAuthenticated,)
+
+
+class UpdateProfile(generics.UpdateAPIView):
+    serializer_class = ProfileSerializer
+    permission_classes = (IsAuthenticated,)
+    queryset = Profile.objects.all()
+
+
+class AddAddress(generics.CreateAPIView):
+    serializer_class = AddressSerializer
+    permission_classes = (IsAuthenticated,)
+
+
+class GetAddress(generics.RetrieveAPIView):
+    serializer_class = AddressSerializer
+    queryset = Address.objects.all()
+    permission_classes = (IsAuthenticated,)
+
+
+class GetUserAddresses(generics.ListAPIView):
+    serializer_class = AddressSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        return Address.objects.filter(user__id=self.request.user.id)
+
+
+class UpdateAddress(generics.UpdateAPIView):
+    serializer_class = AddressSerializer
+    queryset = Address.objects.all()
+    permission_classes = (IsAuthenticated,)
+
+
+class AddFavFood(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, pk):
+        user = get_object_or_404(Profile, id=request.user.id)
+        food = get_object_or_404(Food, pk=pk)
+        user.fav_foods.add(food)
+        user.save()
+        profile_serializer = ProfileSerializer(user)
+        return Response(profile_serializer.data, status=status.HTTP_200_OK)
+
+
+class DeleteFavFood(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, pk):
+        user = get_object_or_404(Profile, id=request.user.id)
+        food = get_object_or_404(Food, pk=pk)
+        user.fav_foods.remove(food)
+        user.save()
+        profile_serializer = ProfileSerializer(user)
+        return Response(profile_serializer.data, status=status.HTTP_200_OK)
+
+
+class AddFavRestaurant(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, pk):
+        user = get_object_or_404(Profile, id=request.user.id)
+        restaurant = get_object_or_404(Restaurant, pk=pk)
+        user.fav_restaurant.add(restaurant)
+        user.save()
+        profile_serializer = ProfileSerializer(user)
+        return Response(profile_serializer.data, status=status.HTTP_200_OK)
+
+
+class DeleteFavRestaurant(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, pk):
+        user = get_object_or_404(Profile, id=request.user.id)
+        restaurant = get_object_or_404(Restaurant, pk=pk)
+        user.fav_restaurant.remove(restaurant)
+        user.save()
+        profile_serializer = ProfileSerializer(user)
+        return Response(profile_serializer.data, status=status.HTTP_200_OK)
