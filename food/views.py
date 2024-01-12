@@ -17,3 +17,16 @@ class GetAllFoods(generics.ListAPIView):
     filter_backends = [filters.SearchFilter]
     search_fields = ['name', 'category', ]
     permission_classes = (IsAuthenticated,)
+
+
+class GetRestaurantFood(generics.ListAPIView):
+    serializer_class = FoodSerializer
+    permission_classes = (IsAuthenticated,)
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name', 'category', ]
+
+    def get_queryset(self):
+        try:
+            return Food.objects.filter(restaurant__id=self.kwargs['pk'])
+        except KeyError:
+            return []
