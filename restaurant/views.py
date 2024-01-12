@@ -73,3 +73,13 @@ class PopularRestaurant(generics.ListAPIView):
 
     def get_queryset(self):
         return Restaurant.objects.filter(rate__gte=3.5)
+
+
+class HighClassRestaurant(generics.ListAPIView):
+    serializer_class = RestaurantSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering = ['-rate']
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        return Restaurant.objects.filter(price_rating__gte=3)

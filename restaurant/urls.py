@@ -10,4 +10,5 @@ urlpatterns = [
     path('restaurants/dine-in/', DineInRestaurant.as_view()),
     path('restaurants/nearest/<str:city>', NearestRestaurant.as_view()),
     path('restaurants/popular/', PopularRestaurant.as_view()),
+    path('restaurants/highclass/', HighClassRestaurant.as_view())
 ]
