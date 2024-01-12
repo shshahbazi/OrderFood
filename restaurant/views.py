@@ -16,8 +16,10 @@ class GetRestaurant(generics.RetrieveAPIView):
 class GetAllRestaurants(generics.ListAPIView):
     serializer_class = RestaurantSerializer
     queryset = Restaurant.objects.all()
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['name', 'description', 'address', 'category', 'features__name']
+    ordering_fields = ['rate', 'price_rating']
+    ordering = ['-rate']
     permission_classes = (IsAuthenticated,)
 
 
