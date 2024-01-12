@@ -4,4 +4,5 @@ from .views import *
 
 urlpatterns = [
     path('get-restaurant/<int:pk>/', GetRestaurant.as_view()),
+    path('get-restaurants/', GetAllRestaurants.as_view()),
 ]
