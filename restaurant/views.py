@@ -35,9 +35,18 @@ class GetFavRestaurant(generics.ListAPIView):
 class FreeDeliveryRestaurant(generics.ListAPIView):
     serializer_class = RestaurantSerializer
     filter_backends = [filters.OrderingFilter]
-    ordering_fields = ['rate', 'price_rating']
     ordering = ['-rate']
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         return Restaurant.objects.filter(delivery_fee=0)
+
+
+class DineInRestaurant(generics.ListAPIView):
+    serializer_class = RestaurantSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering = ['-rate']
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        return Restaurant.objects.filter(dine_in=True)

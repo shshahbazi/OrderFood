@@ -7,4 +7,5 @@ urlpatterns = [
     path('get-restaurants/', GetAllRestaurants.as_view()),
     path('get-fav-restaurants/', GetFavRestaurant.as_view()),
     path('restaurants/free-delivery/', FreeDeliveryRestaurant.as_view()),
+    path('restaurants/dine-in/', DineInRestaurant.as_view()),
 ]
