@@ -36,4 +36,6 @@ urlpatterns = [
          ])
          ),
     path('', include('customer.urls')),
+    path('', include('food.urls')),
+    path('', include('restaurant.urls'))
 ]
