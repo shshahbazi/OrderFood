@@ -63,3 +63,13 @@ class NearestRestaurant(generics.ListAPIView):
             return Restaurant.objects.filter(city=self.kwargs['city'])
         except KeyError:
             return []
+
+
+class PopularRestaurant(generics.ListAPIView):
+    serializer_class = RestaurantSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering = ['-rate']
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        return Restaurant.objects.filter(rate__gte=3.5)
