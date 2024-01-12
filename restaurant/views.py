@@ -50,3 +50,16 @@ class DineInRestaurant(generics.ListAPIView):
 
     def get_queryset(self):
         return Restaurant.objects.filter(dine_in=True)
+
+
+class NearestRestaurant(generics.ListAPIView):
+    serializer_class = RestaurantSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering = ['-rate']
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        try:
+            return Restaurant.objects.filter(city=self.kwargs['city'])
+        except KeyError:
+            return []
