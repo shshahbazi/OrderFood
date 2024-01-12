@@ -30,3 +30,14 @@ class GetFavRestaurant(generics.ListAPIView):
     def get_queryset(self):
         profile = get_object_or_404(Profile, id=self.request.user.id)
         return profile.fav_restaurant.all()
+
+
+class FreeDeliveryRestaurant(generics.ListAPIView):
+    serializer_class = RestaurantSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ['rate', 'price_rating']
+    ordering = ['-rate']
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        return Restaurant.objects.filter(delivery_fee=0)
