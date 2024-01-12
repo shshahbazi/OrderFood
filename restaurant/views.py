@@ -1,3 +1,11 @@
-from django.shortcuts import render
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
 
-# Create your views here.
+from .models import Restaurant
+from .serializers import RestaurantSerializer
+
+
+class GetRestaurant(generics.RetrieveAPIView):
+    serializer_class = RestaurantSerializer
+    queryset = Restaurant.objects.all()
+    permission_classes = (IsAuthenticated,)
