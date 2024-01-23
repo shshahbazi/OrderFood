@@ -3,7 +3,15 @@ from customer.models import Profile, Card, Address
 from django.core.validators import MaxValueValidator
 from restaurant.models import Restaurant
 from food.models import Food
-import uuid
+from django.utils.crypto import get_random_string
+import string
+
+
+def create_order_number():
+    while True:
+        code = get_random_string(8, allowed_chars=string.ascii_uppercase + string.digits)
+        if not Order.objects.filter(order_number=code).exists():
+            return code
 
 
 class Order(models.Model):
@@ -12,7 +20,7 @@ class Order(models.Model):
         ('CN', 'Canceled'),
         ('CP', 'Complete'),
     }
-    order_number = models.CharField(default=str(uuid.uuid4().hex), unique=True, editable=False, max_length=100)
+    order_number = models.CharField(default=create_order_number, unique=False, editable=False, max_length=100)
     user = models.ForeignKey(Profile, on_delete=models.CASCADE)
     review = models.DecimalField(default=0, decimal_places=1, max_digits=3,
                                  validators=[MaxValueValidator(5.0)])
@@ -34,7 +42,7 @@ class OrderItem(models.Model):
     quantity = models.IntegerField(default=1)
 
     def __str__(self):
-        return f"{self.food.name}  x{self.quantity} "
+        return f"{self.food.name}  x{self.quantity} - {self.order.order_number} "
 
 
 class PromoCode(models.Model):
