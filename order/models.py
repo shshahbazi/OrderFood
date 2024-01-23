@@ -31,6 +31,7 @@ class Order(models.Model):
     registration_time = models.DateTimeField(auto_now=True)
     delivery_time = models.DateTimeField()
     status = models.CharField(max_length=500, choices=STATUS_CHOICES, default='UC')
+    time_prepare_foods = models.IntegerField(default=0)
 
     def __str__(self):
         return self.order_number
