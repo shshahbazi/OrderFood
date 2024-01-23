@@ -25,3 +25,11 @@ class CartDetail(APIView):
             item['food'] = model_to_dict(item['food'])
             data.append(item)
         return Response(data)
+
+
+class RemoveFromCart(APIView):
+    def get(self, request, food_id):
+        cart = Cart(request)
+        food = get_object_or_404(Food, id=food_id)
+        cart.remove(food)
+        return Response(status=status.HTTP_200_OK)
