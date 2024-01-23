@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'food',
     'order',
     'restaurant',
+    'cart',
     'rest_framework_swagger',
     'drf_yasg',
     'corsheaders',
@@ -169,3 +170,5 @@ CORS_ORIGIN_WHITELIST = (
     'http://127.0.0.1:5173',
     'http://127.0.0.1:8000'
 )
+
+CART_SESSION_ID = 'cart'
