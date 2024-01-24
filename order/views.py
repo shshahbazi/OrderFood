@@ -3,7 +3,7 @@ from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from .models import OrderItem
+from .models import OrderItem, Order
 from .serializers import OrderSerializer
 from cart.cart import Cart
 
@@ -28,3 +28,9 @@ class CreateOrder(generics.CreateAPIView):
             cart.clear()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors)
+
+
+class GetOrder(generics.RetrieveAPIView):
+    serializer_class = OrderSerializer
+    queryset = Order.objects.all()
+    permission_classes = (IsAuthenticated,)
