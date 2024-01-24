@@ -1,9 +1,11 @@
 from django.db.models import Max
+from django.shortcuts import get_object_or_404
 from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from .models import OrderItem, Order
+from .models import OrderItem, Order, PromoCode
 from .serializers import OrderSerializer
 from cart.cart import Cart
 
@@ -42,3 +44,18 @@ class GetAllOrders(generics.ListAPIView):
 
     def get_queryset(self):
         return Order.objects.filter(user__id=self.request.user.id)
+
+
+class ApplyPromoCode(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        coupon = get_object_or_404(PromoCode, code=request.data['code'])
+        if coupon.user.id == 3:
+            if coupon.is_active:
+                request.session['coupon_id'] = coupon.id
+                coupon.is_active = False
+                coupon.save()
+                return Response({'discount': 'Promo code applied successfully'}, status=status.HTTP_200_OK)
+            return Response({'discount': 'This code is not active.'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'discount': 'This code does not belong to you.'}, status=status.HTTP_400_BAD_REQUEST)

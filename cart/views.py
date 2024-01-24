@@ -22,9 +22,14 @@ class CartDetail(APIView):
         data = []
         cart = Cart(request)
         for item in cart:
-            item['food'] = model_to_dict(item['food'])
+            item['food'] = model_to_dict(item['food'], fields=['id', 'name'])
             data.append(item)
-        return Response(data)
+        return Response({
+            'items': data,
+            'total_cart_price': cart.get_total_price(),
+            'discount_price': cart.get_discount(),
+            'total_price_after_discount': cart.get_total_price_after_discount()
+            })
 
 
 class RemoveFromCart(APIView):
