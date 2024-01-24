@@ -21,6 +21,7 @@ class Food(models.Model):
                                validators=[MaxValueValidator(5.0)])
     prepare_time = models.IntegerField(default=0)
     price = models.DecimalField(blank=False, decimal_places=2, max_digits=4, default=0)
+    picture = models.FileField(blank=True)
 
     def __str__(self):
         return f"{self.name}  {self.restaurant.name}"
