@@ -34,3 +34,11 @@ class GetOrder(generics.RetrieveAPIView):
     serializer_class = OrderSerializer
     queryset = Order.objects.all()
     permission_classes = (IsAuthenticated,)
+
+
+class GetAllOrders(generics.ListAPIView):
+    serializer_class = OrderSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        return Order.objects.filter(user__id=self.request.user.id)
