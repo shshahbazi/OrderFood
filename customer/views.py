@@ -51,10 +51,10 @@ class LogoutAPIView(APIView):
 def activation_link(request, user):
     token = RefreshToken.for_user(user).access_token
 
-    current_site = get_current_site(request).domain
-    relative_link = reverse('email-verify')
+    # current_site = get_current_site(request).domain
+    # relative_link = reverse('email-verify')
 
-    absurl = 'http://' + current_site + relative_link + '?token=' + str(token)
+    absurl = 'http://localhost:5173/login/' + '?token=' + str(token)
     email_body = f'Hi {user.full_name}\nUse link below to verify your email\n{absurl}'
     email = EmailMessage(subject='Verify your email', body=email_body, to=[user.email])
     email.send()
@@ -113,10 +113,10 @@ class ForgotPasswordRequest(APIView):
             user = get_object_or_404(Profile, email=request.data['email'])
             token = RefreshToken.for_user(user).access_token
 
-            current_site = get_current_site(request).domain
-            relative_link = reverse('set-password')
+            # current_site = get_current_site(request).domain
+            # relative_link = reverse('set-password')
 
-            absurl = 'http://' + current_site + relative_link + '?token=' + str(token)
+            absurl = 'http://localhost:5173/passrecovery/setnew/' + '?token=' + str(token)
             email_body = f'Hi {user.full_name}\nUse link below to recovery your password\n{absurl}'
             email = EmailMessage(subject='Recovery your password', body=email_body, to=[user.email])
             email.send()
