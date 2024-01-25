@@ -38,3 +38,16 @@ class RemoveFromCart(APIView):
         food = get_object_or_404(Food, id=food_id)
         cart.remove(food)
         return Response(status=status.HTTP_200_OK)
+
+
+class GetCartRestaurant(APIView):
+    def get(self, request):
+        cart = Cart(request)
+        try:
+            for item in cart:
+                item['food'] = model_to_dict(item['food'], fields=['id', 'name'])
+            print(next(iter(cart.cart.values())))
+            restaurant_id = Food.objects.get(id=next(iter(cart.cart.values()))['food']['id']).restaurant.id
+            return Response({'id': restaurant_id}, status=status.HTTP_200_OK)
+        except :
+             return Response({'id': 'empty cart'}, status=status.HTTP_400_BAD_REQUEST)
