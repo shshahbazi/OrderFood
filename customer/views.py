@@ -1,6 +1,7 @@
 from rest_framework import generics
 from rest_framework import status
 from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -148,10 +149,20 @@ class GetUserProfile(generics.RetrieveAPIView):
     permission_classes = (IsAuthenticated,)
 
 
-class UpdateProfile(generics.UpdateAPIView):
-    serializer_class = ProfileSerializer
+class UpdateProfile(GenericAPIView):
     permission_classes = (IsAuthenticated,)
-    queryset = Profile.objects.all()
+
+    def put(self, request):
+        profile = Profile.objects.get(pk=request.user.id)
+        profile_serializer = ProfileSerializer(
+            instance=profile,
+            data=request.data,
+            partial=True
+        )
+        if profile_serializer.is_valid():
+            profile_serializer.save()
+            return Response(profile_serializer.data, status=status.HTTP_200_OK)
+        return Response(profile_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class AddAddress(generics.CreateAPIView):
