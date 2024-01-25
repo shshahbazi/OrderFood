@@ -1,4 +1,6 @@
 name: Django CI
+env: 
+  - SECRET_KEY: "django-insecure-d$v!q+y6*kac*ou5&^)870tp&u!tu32u6x$)&in(bksp(z3lbg"
 
 on:
   push:
