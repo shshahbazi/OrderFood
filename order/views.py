@@ -59,3 +59,21 @@ class ApplyPromoCode(APIView):
                 return Response({'discount': 'Promo code applied successfully'}, status=status.HTTP_200_OK)
             return Response({'discount': 'This code is not active.'}, status=status.HTTP_400_BAD_REQUEST)
         return Response({'discount': 'This code does not belong to you.'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+class UpdateOrder(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def put(self, request, order_id):
+        order = get_object_or_404(Order, pk=order_id)
+        order_serializer = OrderSerializer(
+            instance=order,
+            data=request.data,
+            partial=True
+        )
+        if order_serializer.is_valid():
+            order_serializer.save()
+            return Response(order_serializer.data, status=status.HTTP_200_OK)
+        return Response(order_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
