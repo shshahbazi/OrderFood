@@ -31,11 +31,15 @@ class UserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 
+def upload_to(instance, filename):
+    return 'images/{filename}'.format(filename=filename)
+
+
 class Profile(AbstractUser):
     username = None
     full_name = models.CharField(max_length=500, blank=False, null=False)
     email = models.EmailField(unique=True, blank=False)
-    picture = models.FileField(blank=True, null=True)
+    picture = models.ImageField(upload_to=upload_to, blank=True, null=True)
     phone = models.CharField(max_length=50, validators=[PhoneValidator], blank=True)
     fav_restaurant = models.ManyToManyField(Restaurant, blank=True)
     fav_foods = models.ManyToManyField(Food, blank=True)
