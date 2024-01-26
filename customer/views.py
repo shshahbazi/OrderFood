@@ -89,7 +89,7 @@ class VerifyEmail(APIView):
             return Response({'message': 'Successfully activated'}, status=status.HTTP_200_OK)
 
         except jwt.ExpiredSignatureError:
-            activation_link(request, user)
+            # activation_link(request, user)
             return Response({'error': 'Activation Expired, We will send you the activation email again.'},
                             status=status.HTTP_400_BAD_REQUEST)
 
