@@ -1,6 +1,6 @@
 from rest_framework import serializers, exceptions
 
-from .models import Profile, Address
+from .models import Profile, Address, Card
 
 
 class AuthTokenSerializer(serializers.ModelSerializer):
@@ -57,4 +57,10 @@ class ProfileSerializer(serializers.ModelSerializer):
 class AddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = Address
+        fields = '__all__'
+
+
+class CardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Card
         fields = '__all__'

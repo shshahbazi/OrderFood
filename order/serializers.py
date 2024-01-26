@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from .models import Order, OrderItem, PromoCode
 from food.serializers import FoodSerializer
+from customer.serializers import CardSerializer
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
@@ -13,6 +14,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     order_items = OrderItemSerializer(many=True)
+    credit_card = CardSerializer(read_only=True)
     class Meta:
         model = Order
         fields = '__all__'
