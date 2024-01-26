@@ -39,7 +39,7 @@ class Profile(AbstractUser):
     username = None
     full_name = models.CharField(max_length=500, blank=False, null=False)
     email = models.EmailField(unique=True, blank=False)
-    picture = models.ImageField(upload_to=upload_to, blank=True, null=True)
+    picture = models.CharField(blank=True, null=True, max_length=500)
     phone = models.CharField(max_length=50, validators=[PhoneValidator], blank=True)
     fav_restaurant = models.ManyToManyField(Restaurant, blank=True)
     fav_foods = models.ManyToManyField(Food, blank=True)
