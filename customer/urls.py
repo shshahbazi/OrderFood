@@ -7,6 +7,7 @@ urlpatterns = [
     path('logout/', LogoutAPIView.as_view()),
     path('register/', UserRegistration.as_view()),
     path('email-verify/<str:token>/', VerifyEmail.as_view(), name='email-verify'),
+    path('email-verify-req/', VerifyEmailRequest.as_view(), name='email-verify'),
     path('forgot-pass-request/', ForgotPasswordRequest.as_view()),
     path('set-password/<str:token>/', SetPassword.as_view(), name='set-password'),
     path('get-user/<int:pk>/', GetUserProfile.as_view()),

@@ -96,8 +96,14 @@ class VerifyEmail(APIView):
         except jwt.DecodeError:
             return Response({'error': 'Invalid Token'}, status=status.HTTP_400_BAD_REQUEST)
 
+
+
+class VerifyEmailRequest(APIView):
+    permission_classes = (AllowAny,)
+
     def post(self, request):
         try:
+            print(request.data['email'])
             user = get_object_or_404(Profile, email=request.data['email'])
             activation_link(request, user)
             return Response({'message': 'Email Sent.'}, status=status.HTTP_200_OK)
