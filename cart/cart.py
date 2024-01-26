@@ -16,7 +16,7 @@ class Cart(object):
     def add(self, food):
         food_id = str(food.id)
         if food_id not in self.cart:
-            self.cart[food_id] = {'quantity': 1, 'price': str(food.price)}
+            self.cart[food_id] = {'quantity': 1, 'price':  float(food.price)}
         else:
             self.cart[food_id]['quantity'] += 1
         self.save()
@@ -67,11 +67,11 @@ class Cart(object):
 
     def get_discount(self):
         if self.coupon:
-            return (self.coupon.discount / Decimal(100)) * self.get_total_price()
+            return round((self.coupon.discount / Decimal(100)) * self.get_total_price(), 2)
         return Decimal(0)
 
     def get_total_price_after_discount(self):
-        return self.get_total_price() - self.get_discount()
+        return round(self.get_total_price() - self.get_discount(), 2)
 
     @property
     def is_empty(self):

@@ -51,7 +51,7 @@ class ApplyPromoCode(APIView):
 
     def post(self, request):
         coupon = get_object_or_404(PromoCode, code=request.data['code'])
-        if coupon.user.id == 3:
+        if coupon.user.id == request.user.id:
             if coupon.is_active:
                 request.session['coupon_id'] = coupon.id
                 coupon.is_active = False
