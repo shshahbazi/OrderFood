@@ -251,7 +251,7 @@ class ProfileImageUploadView(APIView):
         serializer = ProfileImageSerializer(data=request.data)
 
         if serializer.is_valid():
-            profile = Profile.objects.get(user=request.user)
+            profile = Profile.objects.get(id=request.user.id)
             profile.picture = serializer.validated_data['picture']
             profile.save()
 
