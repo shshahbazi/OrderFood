@@ -55,7 +55,7 @@ def activation_link(request, user):
     # current_site = get_current_site(request).domain
     # relative_link = reverse('email-verify')
 
-    absurl = 'http://localhost:5173/login/' + '?token=' + str(token)
+    absurl = 'http://localhost:5173/login/' + str(token)
     email_body = f'Hi {user.full_name}\nUse link below to verify your email\n{absurl}'
     email = EmailMessage(subject='Verify your email', body=email_body, to=[user.email])
     email.send()
@@ -79,8 +79,7 @@ class UserRegistration(generics.CreateAPIView):
 class VerifyEmail(APIView):
     permission_classes = (AllowAny,)
 
-    def get(self, request):
-        token = request.GET.get('token')
+    def get(self, request, token):
         try:
             payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
             user = get_object_or_404(Profile, id=payload['user_id'])
@@ -117,7 +116,7 @@ class ForgotPasswordRequest(APIView):
             # current_site = get_current_site(request).domain
             # relative_link = reverse('set-password')
 
-            absurl = 'http://localhost:5173/passrecovery/setnew/' + '?token=' + str(token)
+            absurl = 'http://localhost:5173/passrecovery/setnew/' + str(token)
             email_body = f'Hi {user.full_name}\nUse link below to recovery your password\n{absurl}'
             email = EmailMessage(subject='Recovery your password', body=email_body, to=[user.email])
             email.send()
@@ -129,8 +128,7 @@ class ForgotPasswordRequest(APIView):
 class SetPassword(APIView):
     permission_classes = (AllowAny,)
 
-    def post(self, request):
-        token = request.GET.get('token')
+    def post(self, request, token):
         try:
             payload = jwt.decode(token, settings.SECRET_KEY, algorithms='HS256')
             user = Profile.objects.get(id=payload['user_id'])
