@@ -19,5 +19,6 @@ urlpatterns = [
     path('add-fav-food/<int:pk>/', AddFavFood.as_view()),
     path('delete-fav-food/<int:pk>/', DeleteFavFood.as_view()),
     path('add-fav-res/<int:pk>/', AddFavRestaurant.as_view()),
-    path('delete-fav-res/<int:pk>/', DeleteFavRestaurant.as_view())
+    path('delete-fav-res/<int:pk>/', DeleteFavRestaurant.as_view()),
+    path('upload-image/', ProfileImageUploadView.as_view(), name='upload-image')
 ]

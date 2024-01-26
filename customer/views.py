@@ -18,6 +18,8 @@ from smtplib import SMTPException
 from food.models import Food
 from restaurant.models import Restaurant
 from .serializers import *
+from rest_framework.parsers import MultiPartParser
+
 
 
 class AuthLoginUser(ObtainAuthToken):
@@ -240,3 +242,21 @@ class DeleteFavRestaurant(APIView):
         user.save()
         profile_serializer = ProfileSerializer(user)
         return Response(profile_serializer.data, status=status.HTTP_200_OK)
+
+
+class ProfileImageUploadView(APIView):
+    parser_classes = [MultiPartParser]
+
+    def post(self, request, *args, **kwargs):
+        serializer = ProfileImageSerializer(data=request.data)
+
+        if serializer.is_valid():
+            profile = Profile.objects.get(id=request.user.id)
+            profile.picture = serializer.validated_data['picture']
+            profile.save()
+
+            image_path = profile.picture.url
+
+            return Response({'image_path': image_path}, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
